@@ -10,9 +10,9 @@ Python 3.13 by PEP-594_.
 Installation
 ------------
 
-Install the ``cgi`` package from PyPI::
+Install the ``legacy-cgi`` package from PyPI::
 
-  $ pip install cgi
+  $ pip install legacy-cgi
 
 Purpose
 -------

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cgi"
+name = "legacy-cgi"
 version = "2.6"
 description = "Fork of the standard library cgi and cgitb modules, being deprecated in PEP-594"
 authors = [
