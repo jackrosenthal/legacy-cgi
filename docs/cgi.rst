@@ -4,8 +4,6 @@
 .. module:: cgi
    :synopsis: Helpers for running Python scripts via the Common Gateway Interface.
 
-**Source code:** :source:`Lib/cgi.py`
-
 .. index::
    pair: WWW; server
    pair: CGI; protocol
@@ -14,7 +12,6 @@
    single: URL
    single: Common Gateway Interface
 
---------------
 
 Support module for Common Gateway Interface (CGI) scripts.
 
@@ -100,7 +97,7 @@ environment variables set according to the CGI standard).  Since it may consume
 standard input, it should be instantiated only once.
 
 The :class:`FieldStorage` instance can be indexed like a Python dictionary.
-It allows membership testing with the :keyword:`in` operator, and also supports
+It allows membership testing with the ``in`` operator, and also supports
 the standard dictionary method :meth:`~dict.keys` and the built-in function
 :func:`len`.  Form fields containing empty strings are ignored and do not appear
 in the dictionary; to keep such values, provide a true value for the optional
@@ -161,7 +158,7 @@ return bytes)::
            if not line: break
            linecount = linecount + 1
 
-:class:`FieldStorage` objects also support being used in a :keyword:`with`
+:class:`FieldStorage` objects also support being used in a ``with``
 statement, which will automatically close them when done.
 
 If an error is encountered when obtaining the contents of an uploaded file
