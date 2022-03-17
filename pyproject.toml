@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "cgi"
+version = "2.6"
+description = "Fork of the standard library cgi and cgitb modules, being deprecated in PEP-594"
+authors = [
+    "Michael McLay <mclay@eeel.nist.gov>",
+    "Steve Majewski <sdm7g@virginia.edu>",
+    "Andreas Paepcke <paepcke@haddock.stanford.edu>",
+    "Guido van Rossum <guido@python.org>",
+]
+license = "PSF-2.0"
+packages = [
+    { include = "cgi.py" },
+    { include = "cgitb.py" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
