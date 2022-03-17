@@ -13,6 +13,8 @@ packages = [
     { include = "cgi.py" },
     { include = "cgitb.py" },
 ]
+readme = "README.rst"
+repository = "https://github.com/jackrosenthal/python-cgi"
 
 [tool.poetry.dependencies]
 python = "^3.10"
