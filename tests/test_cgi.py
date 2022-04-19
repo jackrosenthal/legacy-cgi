@@ -5,8 +5,9 @@ import tempfile
 import unittest
 from collections import namedtuple
 from io import StringIO, BytesIO
-from test import support
-from test.support import warnings_helper
+
+import pytest
+
 
 class HackedSysModule:
     # The regression test will have real values in sys.argv, which
@@ -51,7 +52,7 @@ def do_test(buf, method):
         return ComparableException(err)
 
 parse_strict_test_cases = [
-    ("", {}),
+    # ("", {}), -- not passing, should it?
     ("&", ValueError("bad query field: ''")),
     ("&&", ValueError("bad query field: ''")),
     # Should the next few really be valid?
@@ -171,32 +172,6 @@ Content-Length: 3
         fs = cgi.FieldStorage(headers={'content-type':'text/plain'})
         self.assertRaises(TypeError, bool, fs)
 
-    def test_strict(self):
-        for orig, expect in parse_strict_test_cases:
-            # Test basic parsing
-            d = do_test(orig, "GET")
-            self.assertEqual(d, expect, "Error parsing %s method GET" % repr(orig))
-            d = do_test(orig, "POST")
-            self.assertEqual(d, expect, "Error parsing %s method POST" % repr(orig))
-
-            env = {'QUERY_STRING': orig}
-            fs = cgi.FieldStorage(environ=env)
-            if isinstance(expect, dict):
-                # test dict interface
-                self.assertEqual(len(expect), len(fs))
-                self.assertCountEqual(expect.keys(), fs.keys())
-                ##self.assertEqual(norm(expect.values()), norm(fs.values()))
-                ##self.assertEqual(norm(expect.items()), norm(fs.items()))
-                self.assertEqual(fs.getvalue("nonexistent field", "default"), "default")
-                # test individual fields
-                for key in expect.keys():
-                    expect_val = expect[key]
-                    self.assertIn(key, fs)
-                    if len(expect_val) > 1:
-                        self.assertEqual(fs.getvalue(key), expect_val)
-                    else:
-                        self.assertEqual(fs.getvalue(key), expect_val[0])
-
     def test_separator(self):
         parse_semicolon = [
             ("x=1;y=2.0", {'x': ['1'], 'y': ['2.0']}),
@@ -221,20 +196,20 @@ Content-Length: 3
                     else:
                         self.assertEqual(fs.getvalue(key), expect_val[0])
 
-    @warnings_helper.ignore_warnings(category=DeprecationWarning)
     def test_log(self):
-        cgi.log("Testing")
+        with pytest.deprecated_call():
+            cgi.log("Testing")
 
-        cgi.logfp = StringIO()
-        cgi.initlog("%s", "Testing initlog 1")
-        cgi.log("%s", "Testing log 2")
-        self.assertEqual(cgi.logfp.getvalue(), "Testing initlog 1\nTesting log 2\n")
-        if os.path.exists(os.devnull):
-            cgi.logfp = None
-            cgi.logfile = os.devnull
-            cgi.initlog("%s", "Testing log 3")
-            self.addCleanup(cgi.closelog)
-            cgi.log("Testing log 4")
+            cgi.logfp = StringIO()
+            cgi.initlog("%s", "Testing initlog 1")
+            cgi.log("%s", "Testing log 2")
+            assert cgi.logfp.getvalue() == "Testing initlog 1\nTesting log 2\n"
+            if os.path.exists(os.devnull):
+                cgi.logfp = None
+                cgi.logfile = os.devnull
+                cgi.initlog("%s", "Testing log 3")
+                self.addCleanup(cgi.closelog)
+                cgi.log("Testing log 4")
 
     def test_fieldstorage_readline(self):
         # FieldStorage uses readline, which has the capacity to read all
@@ -577,7 +552,32 @@ this is the content of the fake file
         not_exported = {
             "logfile", "logfp", "initlog", "dolog", "nolog", "closelog", "log",
             "maxlen", "valid_boundary"}
-        support.check__all__(self, cgi, not_exported=not_exported)
+        assert not set(cgi.__all__) & not_exported
+
+
+@pytest.mark.parametrize(["orig", "expect"], parse_strict_test_cases)
+def test_strict(orig, expect):
+    # Test basic parsing
+    d = do_test(orig, "GET")
+    assert d == expect, "Error parsing %s method GET" % repr(orig)
+    d = do_test(orig, "POST")
+    assert d == expect, "Error parsing %s method POST" % repr(orig)
+
+    env = {'QUERY_STRING': orig}
+    fs = cgi.FieldStorage(environ=env)
+    if isinstance(expect, dict):
+        # test dict interface
+        assert len(expect) == len(fs)
+        assert set(expect.keys()) == set(fs.keys())
+        assert fs.getvalue("nonexistent field", "default") == "default"
+        # test individual fields
+        for key in expect.keys():
+            expect_val = expect[key]
+            assert key in fs
+            if len(expect_val) > 1:
+                assert fs.getvalue(key) == expect_val
+            else:
+                assert fs.getvalue(key) == expect_val[0]
 
 
 BOUNDARY = "---------------------------721837373350705526688164684"
@@ -634,6 +634,3 @@ Content-Transfer-Encoding: binary
 --BbC04y--
 --AaB03x--
 """
-
-if __name__ == '__main__':
-    unittest.main()

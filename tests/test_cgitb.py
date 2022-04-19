@@ -1,8 +1,9 @@
-from test.support.os_helper import temp_dir
-from test.support.script_helper import assert_python_failure
 import unittest
 import sys
 import cgitb
+
+import pytest
+
 
 class TestCgitb(unittest.TestCase):
 
@@ -36,35 +37,31 @@ class TestCgitb(unittest.TestCase):
             self.assertIn("ValueError", text)
             self.assertIn("Hello World", text)
 
-    def test_syshook_no_logdir_default_format(self):
-        with temp_dir() as tracedir:
-            rc, out, err = assert_python_failure(
-                  '-c',
-                  ('import cgitb; cgitb.enable(logdir=%s); '
-                   'raise ValueError("Hello World")') % repr(tracedir),
-                  PYTHONIOENCODING='utf-8')
-        out = out.decode()
-        self.assertIn("ValueError", out)
-        self.assertIn("Hello World", out)
-        self.assertIn("<strong>&lt;module&gt;</strong>", out)
-        # By default we emit HTML markup.
-        self.assertIn('<p>', out)
-        self.assertIn('</p>', out)
 
-    def test_syshook_no_logdir_text_format(self):
-        # Issue 12890: we were emitting the <p> tag in text mode.
-        with temp_dir() as tracedir:
-            rc, out, err = assert_python_failure(
-                  '-c',
-                  ('import cgitb; cgitb.enable(format="text", logdir=%s); '
-                   'raise ValueError("Hello World")') % repr(tracedir),
-                  PYTHONIOENCODING='utf-8')
-        out = out.decode()
-        self.assertIn("ValueError", out)
-        self.assertIn("Hello World", out)
-        self.assertNotIn('<p>', out)
-        self.assertNotIn('</p>', out)
+def test_syshook_no_logdir_default_format(tmp_path, capsys):
+    cgitb.enable(logdir=tmp_path)
+    try:
+        raise ValueError("Hello World")
+    except ValueError:
+        sys.excepthook(*sys.exc_info())
+    captured = capsys.readouterr()
+    assert "ValueError" in captured.out
+    assert "Hello World" in captured.out
+    assert "<strong>test_syshook_no_logdir_default_format</strong>" in captured.out
+    # By default we emit HTML markup.
+    assert "<p>" in captured.out
+    assert "</p>" in captured.out
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_syshook_no_logdir_text_format(tmp_path, capsys):
+    # Issue 12890: we were emitting the <p> tag in text mode.
+    cgitb.enable(format="text", logdir=tmp_path)
+    try:
+        raise ValueError("Hello World")
+    except ValueError:
+        sys.excepthook(*sys.exc_info())
+    captured = capsys.readouterr()
+    assert "ValueError" in captured.out
+    assert "Hello World" in captured.out
+    assert "<p>" not in captured.out
+    assert "</p>" not in captured.out
