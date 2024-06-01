@@ -29,3 +29,17 @@ faster in a typical deployment given a new Python process does not
 need created for each request.
 
 .. _WSGI: https://wsgi.readthedocs.io
+
+Documentation
+-------------
+
+See the official documentation for Python 3.12 and earlier for usage:
+
+* `cgi module`_
+* `cgitb module`_
+
+.. _cgi module: https://docs.python.org/3.12/library/cgi.html
+.. _cgitb module: https://docs.python.org/3.12/library/cgitb.html
+
+The modules are not renamed, so code written for Python 3.12 or earlier should
+work without modification with this package installed.
