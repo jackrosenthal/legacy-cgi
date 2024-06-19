@@ -14,7 +14,7 @@ packages = [
     { include = "cgitb.py" },
 ]
 readme = "README.rst"
-repository = "https://github.com/jackrosenthal/python-cgi"
+repository = "https://github.com/jackrosenthal/legacy-cgi"
 
 [tool.poetry.dependencies]
 python = "^3.10"
