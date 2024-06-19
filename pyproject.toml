@@ -12,6 +12,7 @@ license = "PSF-2.0"
 packages = [
     { include = "cgi.py" },
     { include = "cgitb.py" },
+    { include = "tests", format = "sdist" },
 ]
 readme = "README.rst"
 repository = "https://github.com/jackrosenthal/legacy-cgi"
