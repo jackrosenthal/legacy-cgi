@@ -1,9 +1,8 @@
 Python CGI
 ==========
 
-This is a fork of the standard library modules ``cgi`` and ``cgitb``.
-They are slated to be removed from the Python standard libary in
-Python 3.13 by PEP-594_.
+This is a fork of the standard library modules ``cgi`` and ``cgitb``.  They have
+been removed from the Python standard libary in Python 3.13 by PEP-594_.
 
 .. _PEP-594: https://peps.python.org/pep-0594/
 
