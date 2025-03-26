@@ -1,28 +1,35 @@
-[tool.poetry]
+[project]
 name = "legacy-cgi"
-version = "2.6.2"
-description = "Fork of the standard library cgi and cgitb modules, being deprecated in PEP-594"
-authors = [
-    "Michael McLay <mclay@eeel.nist.gov>",
-    "Steve Majewski <sdm7g@virginia.edu>",
-    "Andreas Paepcke <paepcke@haddock.stanford.edu>",
-    "Guido van Rossum <guido@python.org>",
-]
+description = "Fork of the standard library cgi and cgitb modules removed in Python 3.13"
 license = "PSF-2.0"
+version = "2.6.2"
+readme = "README.rst"
+authors = [
+    {name = "Guido van Rossum", email = "guido@python.org"},
+    {name = "Andreas Paepcke", email = "paepcke@haddock.stanford.edu"},
+    {name = "Steve Majewski", email = "sdm7g@virginia.edu"},
+    {name = "Michael McLay", email = "mclay@eeel.nist.gov"},
+]
+maintainers = [
+    {name = "Jack Rosenthal", email = "jack@rosenth.al"},
+]
+requires-python = '>=3.8'
+dependencies = []
+
+[project.urls]
+repository = "https://github.com/jackrosenthal/legacy-cgi"
+
+[tool.poetry]
 packages = [
     { include = "cgi.py" },
     { include = "cgitb.py" },
     { include = "tests", format = "sdist" },
 ]
-readme = "README.rst"
-repository = "https://github.com/jackrosenthal/legacy-cgi"
+requires-poetry = '>=2.0,<3.0'
 
-[tool.poetry.dependencies]
-python = ">=3.8"
-
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^7.1.1"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"

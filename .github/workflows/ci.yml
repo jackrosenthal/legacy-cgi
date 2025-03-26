@@ -8,11 +8,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
-          python-version: "3.13.0-beta.2"
+          python-version: "3.13.2"
           architecture: x64
       - uses: abatilo/actions-poetry@v2.0.0
         with:
-          poetry-version: "1.8.3"
+          poetry-version: "2.1.1"
       - run: poetry install
       - run: poetry run pytest
       - run: poetry build
