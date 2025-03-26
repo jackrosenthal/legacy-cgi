@@ -16,7 +16,7 @@ built-in modules will take precedence.
 
 For example, in a ``requirements.txt`` file::
 
-  legacy-cgi; python_version >= 3.13
+  legacy-cgi; python_version >= '3.13'
 
 Or in a PEP-621 ``pyproject.toml`` file::
 
