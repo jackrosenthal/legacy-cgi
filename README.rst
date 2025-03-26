@@ -10,9 +10,23 @@ Python 3.13 by PEP-594_.
 Installation
 ------------
 
-Install the ``legacy-cgi`` package from PyPI::
+Depend upon ``legacy-cgi`` in your project.  It is recommended to use the marker
+``python_version >= 3.13``, as while the package can install for older Python
+versions, it won't have effect with a standard Python installation as the
+built-in modules will take precedence.
 
-  $ pip install legacy-cgi
+For example, in a ``requirements.txt`` file::
+
+  legacy-cgi; python_version >= 3.13
+
+Or in a PEP-621 ``pyproject.toml`` file::
+
+  [project]
+  ...
+  dependencies = [
+      ...,
+      "legacy-cgi; python_version >= '3.13'",
+  ]
 
 Purpose
 -------
