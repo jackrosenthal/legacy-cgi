@@ -37,11 +37,12 @@ these modules.  Thus, compatibility is the primary goal.
 Contributions are accepted, but should be focused on bug fixes instead
 of new features or major refactoring.
 
-New applications should look at the WSGI_ ecosystem.  There's a number
-of highly-polished web frameworks available, and it's significantly
-faster in a typical deployment given a new Python process does not
-need created for each request.
+New applications should look at the ASGI_ or WSGI_ ecosystems.  There's a number
+of highly-polished web frameworks available, and it's significantly faster in a
+typical deployment given a new Python process does not need created for each
+request.
 
+.. _ASGI: https://asgi.readthedocs.io
 .. _WSGI: https://wsgi.readthedocs.io
 
 Documentation
