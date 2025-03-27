@@ -19,17 +19,16 @@ dependencies = []
 [project.urls]
 repository = "https://github.com/jackrosenthal/legacy-cgi"
 
-[tool.poetry]
-packages = [
-    { include = "cgi.py" },
-    { include = "cgitb.py" },
-    { include = "tests", format = "sdist" },
-]
-requires-poetry = '>=2.0,<3.0'
+[tool.hatch.build.targets.sdist]
+include = ["LICENSE", "README.rst", "cgi.py", "cgitb.py", "tests/*"]
+exclude = [".gitignore"]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.1.1"
+[tool.hatch.build.targets.wheel]
+include = ["cgi.py", "cgitb.py"]
+
+[dependency-groups]
+dev = ["pytest"]
 
 [build-system]
-requires = ["poetry-core>=2.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
