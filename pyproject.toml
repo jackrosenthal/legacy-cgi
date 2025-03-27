@@ -2,7 +2,7 @@
 name = "legacy-cgi"
 description = "Fork of the standard library cgi and cgitb modules removed in Python 3.13"
 license = "PSF-2.0"
-version = "2.6.2"
+version = "2.6.3"
 readme = "README.rst"
 authors = [
     {name = "Guido van Rossum", email = "guido@python.org"},
