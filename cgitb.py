@@ -35,13 +35,46 @@ from html import escape as html_escape
 
 def reset():
     """Return a string that resets the CGI and browser to a known state."""
-    return '''<!--: spam
-Content-Type: text/html
+    return '''Content-Type: text/html
 
-<body bgcolor="#f0f0f8"><font color="#f0f0f8" size="-5"> -->
-<body bgcolor="#f0f0f8"><font color="#f0f0f8" size="-5"> --> -->
-</font> </font> </font> </script> </object> </blockquote> </pre>
-</table> </table> </table> </table> </table> </font> </font> </font>'''
+<style>
+body > *:not(#cgitb_error) {
+    font-size: 0 !important;
+    position: absolute !important;
+    left: -99999px !important;
+    top: -99999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+}
+body {
+    font-size: 0 !important;
+    color: transparent !important;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: auto;
+    background-color: #f0f0f8 !important;
+}
+#cgitb_error {
+    display: block !important;
+    position: relative !important;
+    z-index: 999999 !important;
+    font-size: initial !important;
+    color: initial !important;
+    visibility: visible !important;
+}
+</style>
+<div id="cgitb_error">
+'''
 
 __UNDEF__ = []                          # a special sentinel object
 def small(text):
@@ -106,9 +139,7 @@ def html(einfo, context=5):
         etype = etype.__name__
     pyver = 'Python ' + sys.version.split()[0] + ': ' + sys.executable
     date = time.ctime(time.time())
-    head = f'''
-<body bgcolor="#f0f0f8">
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+    head = f'''<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#6622aa">
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br>
